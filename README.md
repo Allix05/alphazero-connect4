@@ -7,6 +7,8 @@ A from-scratch implementation of the **AlphaZero** algorithm (self-play reinforc
 
 No human game data. No hand-coded heuristics. The agent starts knowing nothing but the rules and gets stronger purely by playing itself, the same recipe DeepMind used for AlphaGo Zero / AlphaZero.
 
+**[Play against it in your browser](https://allix05.github.io/alphazero-connect4/)** &mdash; the trained network runs client-side via ONNX Runtime Web, no backend required.
+
 <!-- SCREENSHOT_PLACEHOLDER -->
 
 ## How it works
@@ -89,12 +91,21 @@ alphazero/         core library: game rules, MCTS, model, training loop
 scripts/
   train.py            CLI training entry point
   play_cli.py         play against a checkpoint in the terminal
+  export_onnx.py      export a checkpoint to ONNX for the browser demo
 web/
   server.py           FastAPI inference server
-  static/             browser UI (board, policy/value panels)
+  static/             browser UI backed by the Python server
+docs/                 fully static GitHub Pages demo (game rules, MCTS,
+                      and ONNX Runtime Web inference all ported to JS --
+                      no backend, this is what's live at the link above)
 tests/                pytest suite for game rules + MCTS
 .github/workflows/    CI: tests + a training smoke test on every push
 ```
+
+## Two ways to play
+
+1. **[Live browser demo](https://allix05.github.io/alphazero-connect4/)** (`docs/`) &mdash; the model is exported to ONNX and runs entirely client-side via [ONNX Runtime Web](https://onnxruntime.ai/docs/tutorials/web/) (WebAssembly). The game rules and MCTS search are ported to plain JS (`docs/connect4.js`, `docs/mcts.js`) so it makes identical decisions to the Python implementation, verified against it numerically (see `scripts/export_onnx.py`). No server, no cold starts, free to host forever on GitHub Pages.
+2. **Local FastAPI server** (`web/`) &mdash; runs the actual PyTorch model, useful when iterating on the network itself: `uvicorn web.server:app --reload`.
 
 ## Why these design choices
 
