@@ -74,7 +74,15 @@ Each iteration: self-play games are generated with the current best network, a c
 
 ## Results
 
-<!-- RESULTS_PLACEHOLDER -->
+The checkpoint shipped in this repo (`checkpoints/best.pt`, also what's exported to the browser demo) comes from **15 self-play iterations** on a single CPU core (~35 minutes total: 24 self-play games + 80 MCTS simulations/move per iteration, arena-gatekept against the incumbent every time):
+
+| | |
+|---|---|
+| Arena promotions | 5 / 15 iterations (candidate had to win &ge;55% of a 20-game arena match to replace the incumbent) |
+| Policy loss | 1.95 &rarr; 1.55 |
+| **Win rate vs. random-move baseline** | **39W / 1L / 0D over 40 games (98%)**, 100 MCTS simulations/move |
+
+That's from well under an hour of training on a laptop CPU with no GPU. AlphaZero-style self-play keeps improving with more compute &mdash; a longer run (`python scripts/train.py --iterations 60 --games-per-iteration 100 --num-simulations 200`, ideally on a GPU) would push it considerably further toward optimal Connect Four play.
 
 ## Project structure
 
