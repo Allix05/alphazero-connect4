@@ -1,5 +1,8 @@
 # AlphaZero Connect Four
 
+[![CI](https://github.com/Allix05/alphazero-connect4/actions/workflows/ci.yml/badge.svg)](https://github.com/Allix05/alphazero-connect4/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A from-scratch implementation of the **AlphaZero** algorithm (self-play reinforcement learning + Monte Carlo Tree Search guided by a neural network) applied to Connect Four, with a polished web UI to play against the trained agent and see its search visualized live.
 
 No human game data. No hand-coded heuristics. The agent starts knowing nothing but the rules and gets stronger purely by playing itself, the same recipe DeepMind used for AlphaGo Zero / AlphaZero.
