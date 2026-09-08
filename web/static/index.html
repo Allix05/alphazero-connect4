@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlphaZero Connect Four</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>Connect Four <span class="accent">vs. AlphaZero</span></h1>
+      <p class="subtitle">A self-play reinforcement learning agent &mdash; Monte Carlo Tree Search guided by a policy/value neural network, trained from zero prior knowledge.</p>
+    </header>
+
+    <main class="layout">
+      <section class="board-panel">
+        <div class="toolbar">
+          <label class="difficulty">
+            Difficulty
+            <select id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+          <label class="first-move">
+            <input type="checkbox" id="humanFirst" checked>
+            You move first
+          </label>
+          <button id="newGame">New Game</button>
+        </div>
+
+        <div id="status" class="status">Your move.</div>
+
+        <div id="board" class="board"></div>
+
+        <div id="modelWarning" class="model-warning hidden">
+          No trained checkpoint found on the server &mdash; the AI is currently playing with <strong>random, untrained weights</strong>. Run <code>scripts/train.py</code> to train one.
+        </div>
+      </section>
+
+      <aside class="insight-panel">
+        <h2>AI's view of the position</h2>
+        <p class="hint">After each of the AI's moves, this panel shows what its neural network + search actually "thinks" &mdash; not a black box.</p>
+
+        <div class="value-block">
+          <div class="value-label">Position evaluation (AI's perspective)</div>
+          <div class="value-bar-track">
+            <div id="valueBar" class="value-bar-fill"></div>
+            <div class="value-bar-mid"></div>
+          </div>
+          <div class="value-legend">
+            <span>AI losing</span>
+            <span id="valueNumber">0.00</span>
+            <span>AI winning</span>
+          </div>
+        </div>
+
+        <div class="policy-block">
+          <div class="value-label">Move probabilities (search visit counts)</div>
+          <div id="policyBars" class="policy-bars"></div>
+        </div>
+
+        <div class="tech-note">
+          <h3>How it works</h3>
+          <ul>
+            <li>A dual-head CNN predicts a move policy and a win-probability estimate directly from the raw board.</li>
+            <li>PUCT Monte Carlo Tree Search uses those predictions to look ahead and refine the move choice.</li>
+            <li>The network was trained purely through self-play &mdash; no human games, no hand-coded strategy.</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      Built from scratch with PyTorch + FastAPI &middot; <a href="https://github.com" id="repoLink" target="_blank" rel="noopener">source on GitHub</a>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

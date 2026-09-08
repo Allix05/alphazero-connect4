@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Training artifacts (large / regenerable) - keep best.pt tracked via Git LFS or release asset instead
+checkpoints/iter_*.pt
+checkpoints/history.json
+
+.DS_Store
+.vscode/
+.idea/
+.claude/
