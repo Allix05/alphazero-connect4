@@ -135,10 +135,14 @@ async function onColumnClick(col) {
   await aiMove();
 }
 
+const MIN_THINK_MS = 1000;
+
 async function aiMove() {
   busy = true;
   setStatus("AI is thinking...", "ai");
   renderBoard();
+
+  const start = performance.now();
 
   // The board is stored as 1=human/-1=AI internally is wrong for our MCTS,
   // which expects a canonical board where +1 = player to move (the AI here).
@@ -148,6 +152,11 @@ async function aiMove() {
   const policy = await AZMCTS.run(evaluateBoard, canonical, numSim);
   const column = policy.reduce((best, p, i) => (p > policy[best] ? i : best), 0);
   const { value } = await evaluateBoard(canonical);
+
+  const elapsed = performance.now() - start;
+  if (elapsed < MIN_THINK_MS) {
+    await new Promise((resolve) => setTimeout(resolve, MIN_THINK_MS - elapsed));
+  }
 
   updateValueBar(value);
   updatePolicyBars(Array.from(policy));

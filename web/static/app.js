@@ -133,10 +133,14 @@ async function onColumnClick(col) {
   await aiMove();
 }
 
+const MIN_THINK_MS = 1000;
+
 async function aiMove() {
   busy = true;
   setStatus("AI is thinking...", "ai");
   renderBoard();
+
+  const start = performance.now();
 
   try {
     const res = await fetch("/api/ai-move", {
@@ -146,6 +150,11 @@ async function aiMove() {
     });
     if (!res.ok) throw new Error(`server error ${res.status}`);
     const data = await res.json();
+
+    const elapsed = performance.now() - start;
+    if (elapsed < MIN_THINK_MS) {
+      await new Promise((resolve) => setTimeout(resolve, MIN_THINK_MS - elapsed));
+    }
 
     modelWarning.classList.toggle("hidden", data.model_loaded);
     updateValueBar(data.value);
