@@ -98,6 +98,13 @@ select, button {
   cursor: pointer;
 }
 
+/* Some browsers ignore color-scheme for the dropdown popup unless the
+   <option> elements themselves have an explicit background. */
+select option {
+  background-color: #1b2338;
+  color: var(--text);
+}
+
 button#newGame {
   margin-left: auto;
   background: linear-gradient(90deg, var(--accent), #7f5bff);
